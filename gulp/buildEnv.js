@@ -1,8 +1,8 @@
 const argv = require('yargs').argv;
-const path = require('path');
+const process = require('process');
 
 module.exports = {
-  isDevel: () => argv.env === 'devel',
+  isDevel: () => argv.env === 'devel' || process.argv[2] === 'watch',
 
   distDir: 'dist',
   

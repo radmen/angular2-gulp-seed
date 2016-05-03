@@ -19,9 +19,12 @@
     "gulp-streamify": "^1.0.2",
     "gulp-typescript": "^2.13.0",
     "gulp-uglify": "^1.5.3",
+    "gulp-util": "^3.0.7",
     "tsify": "^0.15.3",
     "typescript": "^1.9.0-dev.20160503",
+    "typings": "^0.8.1",
     "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.7.0",
     "yargs": "^4.6.0"
   },
   "scripts": {

@@ -1,5 +1,6 @@
 .idea
 dist
+typings
 
 # Created by https://www.gitignore.io/api/node,phpstorm,vim
 

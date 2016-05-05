@@ -13,7 +13,38 @@ const src = [
   buildEnv.srcDir + '/../typings/browser.d.ts',
   buildEnv.srcDir + '/scripts/main.ts',
 ];
-const uglifyPipe = () => {
+
+gulp.task('scripts', () => {
+  const bundler = createBrowserifyBundler();
+  return bundleJs(bundler);
+});
+
+gulp.task('scripts:watch', () => {
+  const bundler = createBrowserifyBundler(true)
+    .plugin(watchify);
+
+  bundler.on('update', () => {
+    gutil.log(gutil.colors.yellow('Updating bundle'));
+    return bundleJs(bundler);
+  });
+
+  bundler.on('log', time => gutil.log(time));
+
+  return bundleJs(bundler);
+});
+
+function createBrowserifyBundler(debug) {
+  if (debug === undefined) {
+    debug = buildEnv.isDevel();
+  }
+
+  return browserify(src, {
+    debug,
+  })
+    .plugin(tsify);
+}
+
+function createUglifyPipe() {
   return gulpIf(
     !buildEnv.isDevel(),
     streamify(uglify())
@@ -32,32 +63,6 @@ function bundleJs(bundler) {
   return bundle
     .on('error', onError)
     .pipe(source('main.js'))
-    .pipe(uglifyPipe())
+    .pipe(createUglifyPipe())
     .pipe(gulp.dest(`${buildEnv.distDir}/scripts`));
 }
-
-gulp.task('scripts', () => {
-  const bundler = browserify(src, {
-    debug: buildEnv.isDevel(),
-  })
-    .plugin(tsify);
-
-  return bundleJs(bundler);
-});
-
-gulp.task('scripts:watch', () => {
-  const bundler = browserify(src, {
-    debug: true,
-  })
-    .plugin(watchify)
-    .plugin(tsify);
-
-  bundler.on('update', () => {
-    gutil.log(gutil.colors.yellow('Updating bundle'));
-    return bundleJs(bundler);
-  });
-
-  bundler.on('log', time => gutil.log(time));
-
-  return bundleJs(bundler);
-});

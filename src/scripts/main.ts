@@ -1,13 +1,6 @@
-interface Person {
-	name: string;
-}
+import 'zone.js';
+import 'reflect-metadata';
+import {bootstrap} from '@angular/platform-browser-dynamic';
+import {AppComponent} from './modules/app/components/app.component';
 
-function greeter(who: Person) {
-	console.log(`Hello ${who.name}`);
-}
-
-const john = {
-	name: 'john',
-}
-
-greeter(john);
+bootstrap(AppComponent);
